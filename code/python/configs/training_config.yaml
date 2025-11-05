@@ -1,0 +1,92 @@
+# Training Configuration for TernaryLLM-20B
+# Comprehensive training hyperparameters and settings
+
+# Model Parameters
+model_name: "TernaryLLM-20B"
+model_type: "transformers"
+model_dtype: "float16"
+sequence_length: 2048
+
+# Training Parameters
+batch_size: 32
+gradient_accumulation_steps: 4
+max_steps: 10000
+max_epochs: 3
+warmup_steps: 1000
+learning_rate: 2e-5
+min_learning_rate: 1e-7
+lr_scheduler_type: "cosine"
+weight_decay: 0.01
+adam_beta1: 0.9
+adam_beta2: 0.999
+adam_epsilon: 1e-8
+max_grad_norm: 1.0
+
+# Mixed Precision Training
+use_mixed_precision: true
+fp16_opt_level: "O1"
+fp16_loss_scale: 128.0
+
+# Gradient Checkpointing
+gradient_checkpointing: true
+save_steps: 1000
+save_total_limit: 3
+eval_steps: 500
+logging_steps: 100
+report_to: "tensorboard"
+
+# Data Configuration
+data_path: "data/processed/"
+train_file: "train_dataset.jsonl"
+eval_file: "eval_dataset.jsonl"
+test_file: "test_dataset.jsonl"
+max_samples: null  # null means use all samples
+
+# Data Processing
+tokenizer_name: "gpt2"
+padding_side: "right"
+truncation_side: "right"
+add_special_tokens: true
+remove_columns: ["text"]
+
+# Sharding and Distribution
+dataloader_num_workers: 4
+dataloader_pin_memory: true
+prefetch_factor: 2
+
+# Optimization
+optim: "adamw_torch"
+optim_args: null
+
+# Regularization
+label_smoothing: 0.0
+dropout_rate: 0.1
+attention_dropout: 0.1
+hidden_dropout: 0.1
+
+# Memory Optimization
+low_cpu_mem_usage: true
+
+# Checkpoint Management
+load_best_model_at_end: true
+metric_for_best_model: "eval_loss"
+greater_is_better: false
+ignore_data_skip: false
+
+# Logging
+logging_dir: "logs/"
+logging_strategy: "steps"
+
+# Evaluation
+evaluation_strategy: "steps"
+eval_delay: 0
+eval_dump_predictions: true
+
+# Mixed Precision Loss Scaling
+auto_loss_scaling: true
+
+# Custom Parameters for Ternary Models
+ternary_threshold: 0.1
+ternary_momentum: 0.9
+use_ternary_quantization: true
+quantization_levels: 3  # {-1, 0, +1}
