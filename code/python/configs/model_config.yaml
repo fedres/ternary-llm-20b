@@ -1,0 +1,144 @@
+# TernaryLLM-20B Model Architecture Configuration
+# Comprehensive model architecture settings for ternary quantization
+
+# Model Identity
+model_name: "TernaryLLM-20B"
+model_type: "TernaryLLMForCausalLM"
+vocab_size: 50257
+max_position_embeddings: 2048
+tie_word_embeddings: false
+
+# Architecture
+num_hidden_layers: 40
+num_attention_heads: 64
+num_key_value_heads: 8
+hidden_size: 5120
+intermediate_size: 27392
+rms_norm_eps: 1e-6
+use_cache: true
+
+# Attention Configuration
+attention_bias: false
+attention_probs_dropout_prob: 0.1
+hidden_dropout: 0.1
+max_position_embeddings: 2048
+
+# RoPE (Rotary Positional Embeddings)
+rope_theta: 10000.0
+rope_scaling: null
+use_rope: true
+
+# Layer Normalization
+layer_norm_type: "rmsnorm"
+layer_norm_eps: 1e-6
+
+# Activation Function
+hidden_act: "gelu_pytorch_tanh"
+activation_function: "gelu_pytorch_tanh"
+
+# Ternary Quantization Settings
+use_ternary: true
+ternary_method: " LearnedScaleTernaryQuantization"
+ternary_threshold: 0.1
+ternary_momentum: 0.9
+clamp_val: 1.0
+use_weight_clipping: false
+weight_clip_value: 1.0
+
+# Quantization Levels
+num_quantization_levels: 3
+quantization_levels: [-1, 0, 1]
+quantization_method: "sign_function"
+
+# Learned Scale Parameters
+use_learned_scale: true
+scale_init_method: "xavier_uniform"
+scale_lr_factor: 1.0
+scale_max_init: 1.0
+
+# Forward Pass Optimization
+use_flash_attention: true
+use_rope_gemm: true
+use_optimized_kernels: true
+use_memory_efficient_attention: true
+
+# MoE Configuration (if applicable)
+use_moe: false
+num_experts: 8
+expert_capacity_factor: 1.0
+expert_top_k: 1
+
+# MLP Configuration
+mlp_type: "ternary_mlp"
+mlp_ternary_threshold: 0.1
+use_gate_networks: false
+gate_activation: "sigmoid"
+
+# Embedding Configuration
+embeddings_type: "ternary_embeddings"
+embedding_ternary_threshold: 0.05
+add_position_embedding: false
+position_embedding_type: "rope"
+
+# Output Layer Configuration
+use_lm_head_ternary: true
+lm_head_ternary_threshold: 0.1
+lm_head_bias: false
+lm_head_norm_type: "rmsnorm"
+
+# Memory and Performance
+enable_gradient_checkpointing: true
+use_tensor_parallel: false
+use_pipeline_parallel: false
+
+# Initialization
+initializer_range: 0.02
+initializer_variance_scaling: true
+initializer_orthogonal: false
+
+# Model Dimensions
+head_dim: 80  # hidden_size // num_attention_heads
+kv_channels: 80  # for key-value attention
+
+# Sparse Attention (optional)
+use_sparse_attention: false
+sparse_attention_pattern: "sliding_window"
+sparse_attention_window: 512
+
+# Attention Bias and Masks
+attention_mask_type: "causal"
+use_alibi: false
+alibi_bias_max: 8
+
+# Layer Normalization Settings
+apply_final_layer_norm: false
+apply_input_layer_norm: true
+layer_norm_elementwise_affine: true
+
+# Dropout Settings
+dropout_prob: 0.1
+attention_dropout: 0.1
+hidden_dropout: 0.1
+activation_dropout: 0.1
+
+# Model Precision
+base_dtype: "float16"
+compute_dtype: "float16"
+ternary_dtype: "int8"
+scale_dtype: "float32"
+
+# Custom Parameters for Ternary Models
+enable_ternary_training: true
+ternary_loss_weight: 0.01
+use_straight_through_estimator: true
+ste_temperature: 1.0
+
+# Regularization
+apply_layer_norm_before_transform: false
+apply_residual_connection_post_layernorm: false
+add_qkv_bias: false
+
+# Error Handling
+enable_error_correction: false
+use_error_feedback: false
+error_feedback_factor: 0.1
